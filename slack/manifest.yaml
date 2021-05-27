@@ -28,5 +28,3 @@ oauth_config:
       - commands
       - chat:write
       - chat:write.public
-  redirect_urls:
-    - https://example.com/slack/auth
