@@ -1,0 +1,32 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: FAST-Bot
+  description: A simple bot to interact with F5 FAST templates.
+  background_color: "#0000AA"
+settings:
+  socket_mode_enabled: false
+  interactivity:
+    is_enabled: true
+    request_url: https://htn-slack.ngrok.io/interactive
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: fast
+  slash_commands:
+    - command: /fast
+      description: Opens up the F5 FAST template interface.
+      usage_hint: /fast
+      url: https://example.com/slash/fast
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - chat:write
+      - chat:write.public
+  redirect_urls:
+    - https://example.com/slack/auth
