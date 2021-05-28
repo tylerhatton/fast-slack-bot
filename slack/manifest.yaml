@@ -20,8 +20,7 @@ features:
   slash_commands:
     - command: /fast
       description: Opens up the F5 FAST template interface.
-      usage_hint: /fast
-      url: https://example.com/slash/fast
+      url: https://htn-slack.ngrok.io/fast
 oauth_config:
   scopes:
     bot:
