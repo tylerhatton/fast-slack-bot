@@ -1,3 +1,5 @@
+import requests
+
 class BigIpListModal:
     def __init__(self):
         self.contents = {
@@ -79,6 +81,20 @@ class TemplateListModal:
             },
             "blocks": [
                 {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*Target BIG-IP*"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Placeholder"
+                    }
+                },
+                {
                     "block_id": "bigip_select",
                     "type": "input",
                     "element": {
@@ -100,18 +116,26 @@ class TemplateListModal:
             ]      
         }
 
-    def populate_template_list(self, bigips):
-        bigip_list = []
-        for bigip in bigips:
+    def populate_template_list(self, bigip, bigip_username, bigip_password):
+        response = requests.get(
+            'https://' + bigip + '/mgmt/shared/fast/templates/',
+            auth=(bigip_username, bigip_password),
+            verify=False,
+            timeout=10
+        )
+
+        template_list = []
+        for template in response.json():
             item = {
                 "text": {
                     "type": "plain_text",
-                    "text": bigip,
+                    "text": template,
                     "emoji": True
                 },
-                "value": bigip
+                "value": template
             }
-            bigip_list.append(item)
+            template_list.append(item)
         
-        self.contents['blocks'][0]['element']['options'] = bigip_list
+        self.contents['blocks'][1]['text']['text'] = bigip
+        self.contents['blocks'][2]['element']['options'] = template_list
         return

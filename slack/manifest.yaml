@@ -5,11 +5,6 @@ display_information:
   name: FAST-Bot
   description: A simple bot to interact with F5 FAST templates.
   background_color: "#0000AA"
-settings:
-  socket_mode_enabled: false
-  interactivity:
-    is_enabled: true
-    request_url: https://htn-slack.ngrok.io/interactive
 features:
   app_home:
     home_tab_enabled: true
@@ -17,13 +12,22 @@ features:
     messages_tab_read_only_enabled: false
   bot_user:
     display_name: fast
+    always_online: true
   slash_commands:
     - command: /fast
-      description: Opens up the F5 FAST template interface.
       url: https://htn-slack.ngrok.io/fast
+      description: Opens up the F5 FAST template interface.
+      should_escape: false
 oauth_config:
   scopes:
     bot:
       - commands
       - chat:write
       - chat:write.public
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://htn-slack.ngrok.io/interactive
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  is_hosted: false

@@ -3,10 +3,13 @@ from typing import Optional
 from fastapi import FastAPI, Form
 from slack import WebClient
 from modal import BigIpListModal, TemplateListModal
+from credentials import get_hosts, get_username, get_password
 
 app = FastAPI()
 
 client = WebClient(token=os.environ.get('TOKEN'))
+
+creds_file = 'credentials.json'
 
 @app.get("/")
 def read_root():
@@ -15,7 +18,7 @@ def read_root():
 @app.post("/fast")
 async def open_fast_prompt(trigger_id: str = Form(...)):
     modal = BigIpListModal()
-    bigips = ["52.53.185.182:8443"]
+    bigips = get_hosts(creds_file)
     modal.populate_bigip_list(bigips)
 
     client.views_open(trigger_id=trigger_id, view=modal.contents)
@@ -28,8 +31,11 @@ async def open_fast_prompt(payload: str = Form(...)):
 
     if json_payload['type'] == 'view_submission' and json_payload['view']['callback_id'] == 'bigip_list':
         modal = TemplateListModal()
-        bigips = ["52.53.185.182:8443"]
-        modal.populate_template_list(bigips)
+        bigip = json_payload['view']['state']['values']['bigip_select']['static_select-action']['selected_option']['value']
+        bigip_username = get_username(creds_file, bigip)
+        bigip_password = get_password(creds_file, bigip)
+
+        modal.populate_template_list(bigip, bigip_username, bigip_password)
 
         return({
             "response_action": "push",
