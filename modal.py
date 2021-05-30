@@ -213,6 +213,7 @@ class TemplateModal:
             property_default = str(template_properties[property].get('default')) or ' '
             property_hint = template_properties[property].get('description') or ' '
 
+            # Building FAST template in modal.
             if property_type == 'string' or property_type == 'integer':
                 self.contents['blocks'].append(
                     {
@@ -238,7 +239,7 @@ class TemplateModal:
             elif property_type == 'boolean':
                 self.contents['blocks'].append(
                     {
-                        "block_id": "template_select",
+                        "block_id": property,
                         "type": "input",
                         "element": {
                             "type": "static_select",
@@ -267,6 +268,33 @@ class TemplateModal:
                         "label": {
                             "type": "plain_text",
                             "text": property
+                        },
+                        "hint": {
+                            "type": "plain_text",
+                            "text": property_hint
+                        }
+                    }
+                )
+            elif property_type == "array":
+                self.contents['blocks'].append(
+                    {
+                        "type": "input",
+                        "element": {
+                            "type": "plain_text_input",
+                            "action_id": property,
+                            "multiline": True,
+                            "placeholder": {
+                                "type": "plain_text",
+                                "text": "Multi-line input. Write one item per line."
+                            }
+                        },
+                        "label": {
+                            "type": "plain_text",
+                            "text": property
+                        },
+                        "hint": {
+                            "type": "plain_text",
+                            "text": property_hint
                         }
                     }
                 )
