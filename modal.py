@@ -188,7 +188,10 @@ class TemplateModal:
                         "type": "plain_text",
                         "text": "Placeholder"
                     }
-                }
+                },
+                {
+                    "type": "divider"
+		        }
             ]      
         }
 
@@ -205,26 +208,66 @@ class TemplateModal:
 
         template_properties = response.json()['_parametersSchema']['properties']
 
-        for template in template_properties.keys():
-            template_type = template_properties[template]['type']
-            template_default = str(template_properties[template].get('default')) or ' '
+        for property in template_properties.keys():
+            property_type = template_properties[property].get('type') or 'string'
+            property_default = str(template_properties[property].get('default')) or ' '
+            property_hint = template_properties[property].get('description') or ' '
 
-            if template_type == 'string' or template_type == 'integer':
+            if property_type == 'string' or property_type == 'integer':
                 self.contents['blocks'].append(
                     {
                         "type": "input",
                         "element": {
                             "type": "plain_text_input",
-                            "action_id": template,
+                            "action_id": property,
                             "placeholder": {
                                 "type": "plain_text",
-                                "text": str(template_default)
+                                "text": str(property_default)
                             }
                         },
                         "label": {
                             "type": "plain_text",
-                            "text": template
+                            "text": property
+                        },
+                        "hint": {
+                            "type": "plain_text",
+                            "text": property_hint
                         }
                     } 
+                )
+            elif property_type == 'boolean':
+                self.contents['blocks'].append(
+                    {
+                        "block_id": "template_select",
+                        "type": "input",
+                        "element": {
+                            "type": "static_select",
+                            "placeholder": {
+                                "type": "plain_text",
+                                "text": "True or False",
+                            },
+                            "options": [
+                                {
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": "True"
+                                    },
+                                    "value": "1"
+                                },
+                                {
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": "False"
+                                    },
+                                    "value": "0"
+                                }
+                            ],
+                            "action_id": "static_select-action"
+                        },
+                        "label": {
+                            "type": "plain_text",
+                            "text": property
+                        }
+                    }
                 )
         return
