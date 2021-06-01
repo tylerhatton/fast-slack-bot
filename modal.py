@@ -144,7 +144,7 @@ class TemplateModal:
     def __init__(self):
         self.contents = {
             "type": "modal",
-            "callback_id": "template_list",
+            "callback_id": "template",
             "title": {
                 "type": "plain_text",
                 "text": "F5 FAST Template",
@@ -218,6 +218,7 @@ class TemplateModal:
                 self.contents['blocks'].append(
                     {
                         "type": "input",
+                        "block_id": property,
                         "element": {
                             "type": "plain_text_input",
                             "action_id": property,
@@ -279,6 +280,7 @@ class TemplateModal:
                 self.contents['blocks'].append(
                     {
                         "type": "input",
+                        "block_id": property,
                         "element": {
                             "type": "plain_text_input",
                             "action_id": property,

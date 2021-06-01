@@ -1,3 +1,5 @@
 slackclient
 python-multipart
 requests
+fastapi
+uvicorn
