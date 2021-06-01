@@ -4,7 +4,7 @@ _metadata:
 display_information:
   name: FAST-Bot
   description: A simple bot to interact with F5 FAST templates.
-  background_color: "#0000AA"
+  background_color: "#E21D38"
 features:
   app_home:
     home_tab_enabled: true
