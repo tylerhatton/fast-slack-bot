@@ -1,5 +1,6 @@
-import json, os, requests
-from typing import Optional
+import json
+import os
+import requests
 from fastapi import FastAPI, Form, HTTPException
 from slack import WebClient
 from modal import BigIpListModal, TemplateListModal, TemplateModal
@@ -11,9 +12,11 @@ client = WebClient(token=os.environ.get('TOKEN'))
 
 creds_file = 'credentials.json'
 
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 @app.post("/fast")
 async def open_fast_prompt(trigger_id: str = Form(...)):
@@ -24,8 +27,9 @@ async def open_fast_prompt(trigger_id: str = Form(...)):
     client.views_open(trigger_id=trigger_id, view=modal.contents)
     return "Opening FAST prompt"
 
+
 @app.post("/interactive")
-async def open_fast_prompt(payload: str = Form(...)):
+async def open_interactive_prompt(payload: str = Form(...)):
     json_payload = json.loads(payload)
 
     if json_payload['type'] == 'view_submission' and json_payload['view']['callback_id'] == 'bigip_list':
@@ -47,7 +51,8 @@ async def open_fast_prompt(payload: str = Form(...)):
         bigip_username = get_username(creds_file, bigip)
         bigip_password = get_password(creds_file, bigip)
 
-        modal.populate_template(bigip, template, bigip_username, bigip_password)
+        modal.populate_template(
+            bigip, template, bigip_username, bigip_password)
 
         return({
             "response_action": "push",
@@ -88,7 +93,7 @@ async def open_fast_prompt(payload: str = Form(...)):
             )
             response.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            raise HTTPException(status_code=500, detail="Request Failed")
+            raise HTTPException(status_code=500, detail=err)
 
         # Close all the views and end the modal
         return {

@@ -1,5 +1,6 @@
 import requests
 
+
 class BigIpListModal:
     def __init__(self):
         self.contents = {
@@ -40,7 +41,7 @@ class BigIpListModal:
                         "emoji": True
                     }
                 }
-            ]      
+            ]
         }
 
     def populate_bigip_list(self, bigips):
@@ -55,9 +56,10 @@ class BigIpListModal:
                 "value": bigip
             }
             bigip_list.append(item)
-        
+
         self.contents['blocks'][0]['element']['options'] = bigip_list
         return
+
 
 class TemplateListModal:
     def __init__(self):
@@ -113,7 +115,7 @@ class TemplateListModal:
                         "emoji": True
                     }
                 }
-            ]      
+            ]
         }
 
     def populate_template_list(self, bigip, bigip_username, bigip_password):
@@ -135,10 +137,11 @@ class TemplateListModal:
                 "value": template
             }
             template_list.append(item)
-        
+
         self.contents['blocks'][1]['text']['text'] = bigip
         self.contents['blocks'][2]['element']['options'] = template_list
         return
+
 
 class TemplateModal:
     def __init__(self):
@@ -191,8 +194,8 @@ class TemplateModal:
                 },
                 {
                     "type": "divider"
-		        }
-            ]      
+                }
+            ]
         }
 
     def populate_template(self, bigip, template, bigip_username, bigip_password):
@@ -206,12 +209,16 @@ class TemplateModal:
             timeout=10
         )
 
-        template_properties = response.json()['_parametersSchema']['properties']
+        template_properties = response.json(
+        )['_parametersSchema']['properties']
 
         for property in template_properties.keys():
-            property_type = template_properties[property].get('type') or 'string'
-            property_default = str(template_properties[property].get('default')) or ' '
-            property_hint = template_properties[property].get('description') or ' '
+            property_type = template_properties[property].get(
+                'type') or 'string'
+            property_default = str(
+                template_properties[property].get('default')) or ' '
+            property_hint = template_properties[property].get(
+                'description') or ' '
 
             # Building FAST template in modal.
             if property_type == 'string' or property_type == 'integer':
@@ -235,7 +242,7 @@ class TemplateModal:
                             "type": "plain_text",
                             "text": property_hint
                         }
-                    } 
+                    }
                 )
             elif property_type == 'boolean':
                 self.contents['blocks'].append(

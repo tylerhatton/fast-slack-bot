@@ -1,5 +1,6 @@
 import json
 
+
 def get_hosts(filename):
     with open(filename) as cred_file:
         hosts = []
@@ -7,10 +8,12 @@ def get_hosts(filename):
             hosts.append(host)
         return hosts
 
+
 def get_username(filename, host):
     with open(filename) as cred_file:
         username = json.load(cred_file)[host]['username']
         return username
+
 
 def get_password(filename, host):
     with open(filename) as cred_file:
